@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This SQL analysis project examines a dataset of 1,997 retail transactions from a US-based store spanning 2022-2023. The analysis focuses on customer behavior, sales patterns, product performance and seasonal trends to provide actionable insights for retail decision-making and strategy development.
+This SQL analysis project examines a dataset of 1,997 retail transactions from a US-based store spanning 2022-2023. The analysis focuses on customer behavior, sales patterns, product performance and seasonal trends to provide insights for retail decision-making and strategy development.
 
 ## Dataset Information
 
@@ -135,4 +135,5 @@ Contributions are welcome. If you have suggestions for improvements or find any 
 
 
 For inquiries or feedback, please reach out through muthominicholus@gmaill.com or https://nicholusmuthomi.website/
+
 
