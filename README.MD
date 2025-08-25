@@ -133,4 +133,5 @@ Contributions are welcome. If you have suggestions for improvements or find any 
 
 ## Contact
 
-For inquiries or feedback, please reach out through [muthominicholus@gmaill.com] or [https://nicholusmuthomi.website/]
+
+For inquiries or feedback, please reach out through (muthominicholus@gmaill.com) or (https://nicholusmuthomi.website/)
