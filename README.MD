@@ -42,7 +42,7 @@ The objective is to extract better understanding of customer behavior, product p
    * Load and clean the dataset.
    * Run queries for analysis.
 
-##Analysis Steps
+## Analysis Steps
 
 1. **Data Quality Checks**
 
@@ -90,3 +90,4 @@ The objective is to extract better understanding of customer behavior, product p
 ## Files
 
 * `Retail Store Sales.sql` – SQL queries and analysis workflow for PostgreSQL (pgAdmin4).
+
