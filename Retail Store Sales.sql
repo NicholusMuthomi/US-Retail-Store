@@ -4,27 +4,19 @@
 /*
 -- BUSINESS OBJECTIVE
 
-   Retail stores collect thousands of sales records every year. Each record holds information about who bought something, what they bought, when they bought it, how much it cost
-   and how much profit was made. But having data is not enough. What matters is making sense of it.
-   
-   -- The goal of this project is to analyse retail sales data using SQL. By doing this, we answer questions such as:
-   
-     * Which products bring in the most revenue and profit?
-	 * Who are the most valuable customers?
-	 * What time of day, week, or year drives the most sales?
-	 * How do customer demographics like age or gender affect spending patterns?
-	 * Are there data problems, such as missing or invalid values, that need cleaning before analysis?
-	 
-   The purpose is to use data to understand customer behavior, improve marketing, manage inventory better and grow revenue. 
-   This mirrors how big retailers like Walmart or Amazon rely on data to make decisions every day.
+Retail stores in the U.S. operate at the center of consumers and goods. They serve as physical points of sale where customers browse, evaluate and purchase products on the spot. They tie 
+supply chains to demand in real time. The flow of transactions generated within these stores reflects consumer preferences, market demand and the effectiveness of sales strategies. Analysing 
+retail sales helps businesses identify top-selling products, forecast demand and measure the impact of promotions or seasonal shifts. It also highlights customer buying patterns that guide 
+decisions on inventory management, pricing and store operations. The dataset offers a structured record of sales activity in the U.S. that can be used to track performance, monitor growth 
+and build strategies that strengthen competitiveness in the retail market.
 
--- DATA COLLETION
-   The data used in this project was shared through a Telegram Data Scentist Channel from a actual store in United State Store for transations between 2022 and 2023.
-   The data is shared on my Github.
+-- DATA COLLECTION
+The data used in this project was shared through a Telegram Data Scentist Channel from a actual store in United State Store for transations between 2022 and 2023.
+The data is shared on my Github.
 */
 
 -- CREATE TABLE STRUCTURE
--- This creates our main table to store all retail sales transaction data
+-- Creates our main table to store all retail sales transaction data
 DROP TABLE IF EXISTS retail_sales;
 CREATE TABLE retail_sales (
     transactions_id INT PRIMARY KEY,     -- Unique transaction identifier
@@ -45,7 +37,7 @@ CREATE TABLE retail_sales (
 -- =====================================
 
 -- 1.1 CHECK FOR NULL VALUES
--- This helps us understand data completeness across all columns
+-- Let begin by uderstand data completeness across all columns
 SELECT 
     'DATA COMPLETENESS CHECK' AS analysis_type,
     COUNT(*) as total_records,
@@ -82,6 +74,7 @@ ORDER BY duplicate_count DESC;
 Observations
 There are no duplicate values.
 */
+
 -- 1.3 CHECK FOR DATA QUALITY ISSUES
 -- Identifies invalid or suspicious data values
 SELECT 
@@ -114,12 +107,14 @@ The most common data issue is COGS exceeding the sale price in 70 cases, which c
 There are 9 transactions with invalid quantities, prices or total sales that require review or cleaning.
 Age and calculation consistency are 100% valid, supporting accurate demographic and financial analysis.
 */
+
+-- COGS means Cost of Goods Sold. It is the direct cost a company incurs to produce or purchase the products it sells.
 -- Let fix COGS Higher Than Sale Price (70 Records)
 UPDATE retail_sales 
-SET cogs = total_sale * 0.7  -- Setting COGS to 70% of sale price because COGS should never exceed sale price, this (indicates loss on every sale)
+SET cogs = total_sale * 0.7  -- Setting COGS to 70% of sale price because COGS should never exceed sale price, this will indicates loss on every sale
 WHERE cogs > total_sale;
 
--- Let remove Invalid Quantities/Prices/Total Sales (3 Records Each)
+-- Let also remove Invalid Quantities/Prices/Total Sales (3 Records Each)
 DELETE FROM retail_sales 
 WHERE quantity <= 0 OR price_per_unit <= 0 OR total_sale <= 0;
 
@@ -135,14 +130,15 @@ FROM retail_sales;
 /*
 Observations
 There are transactions recorded from January 1, 2022 to December 31, 2023 covering a 2-year period.
-The dataset includes 647 unique dates indicating sales occurred on about 88% of the days in that period. The missing date of around 83 days probably they are weekends and holidays.
+The dataset includes 647 unique dates indicating sales occurred on about 88% of the days in that period. The missing date of around 83 days probably they are some weekends and holidays.
 */
+
 -- =============================
 -- STEP 2: DATASET EXPLORATION
 -- =============================
 
 -- 2.1 DATASET OVERVIEW
--- Provides high-level statistics about our dataset
+-- Provides statistics level about our dataset
 SELECT 
     'DATASET OVERVIEW' AS analysis_section,
     COUNT(*) AS total_transactions,
@@ -159,9 +155,9 @@ FROM retail_sales;
 /*
 Observations
 There are 1,997 transactions with amounts ranging from 25.00 to 2,000.00.
-There are 155 customers with ages ranging from 10 to 64 and an average age of 41.
+There are 155 customers with ages ranging from 10 to 64 and an average age of 41yrs.
 There are 3 categories in the dataset.
-The average transaction value is 456.54 and the total revenue is 911,720.00.
+The average transaction value is 456.54 and the total revenue is 911,720.
 */
 -- 2.2 CATEGORY DISTRIBUTION
 -- Shows what product categories are most popular
@@ -179,10 +175,11 @@ ORDER BY transaction_count DESC;
 
 /*
 Observations
-1. Clothing has 701 transactions (35.1%) generating 311,070.00 with an average spend of 443.75 and 1,785 items sold. It has high volume but lower average spend.
-2. Electronics has 684 transactions (34.25%) generating 313,810.00 with an average spend of 458.79 and 1,698 items sold. It shows balanced performance.
-3. Beauty has 612 transactions (30.65%) generating 286,840.00 with an average spend of 468.69 and 1,535 items sold. It has the highest average spend offering upsell potential.
+1. Clothing has 701 transactions (35.1%) generating 311K with an average spend of 443.75 and 1,785 items sold. It has high volume but lower average spend.
+2. Electronics has 684 transactions (34.25%) generating 313K with an average spend of 458.79 and 1,698 items sold. It shows balanced performance.
+3. Beauty has 612 transactions (30.65%) generating 286K with an average spend of 468.69 and 1,535 items sold. It has the highest average spend offering upsell potential.
 */
+
 -- 2.3 GENDER DISTRIBUTION AND SPENDING PATTERNS
 -- Shows gender-based shopping behavior
 SELECT 
@@ -230,12 +227,13 @@ GROUP BY age_group
 ORDER BY avg_spending DESC;
 /*
 Observations
-* Gen Z (under 25) accounts for 15% of sales with the highest average spend per transaction at 502.76 and total revenue of 152k.
+* Gen Z (under 25 accounts for 15% of sales with the highest average spend per transaction at 502.76 and total revenue of 152k.
 * Millennials (25–34) account for 20% of sales with an average spend of 479.23 and total revenue of 194k.
 * Gen X (35–44) accounts for 21% of sales with an average spend of 466.13 and total revenue of 194k.
 * Boomers (45–54) account for 22% of sales with an average spend of 432.65 and total revenue of 193k.
 * Seniors (55+) account for 21% of sales with an average spend of 417.82 and total revenue of 178k.
 * Gen Z spends the most per transaction while Boomers and Gen X lead in transaction volume, contributing 43% combined.
+  This suggests marketing should target younger demographics with premium products.
 * Revenue is similar across Millennials, Gen X and Boomers, while Seniors generate the lowest total revenue.
 */
 
@@ -249,7 +247,12 @@ SELECT
     ROUND(avg_value, 2) AS average,
     ROUND(std_deviation, 2) AS standard_deviation
 FROM (
-    SELECT 'Price Per Unit' AS metric_name, MIN(price_per_unit) AS min_value, MAX(price_per_unit) AS max_value, AVG(price_per_unit) AS avg_value, STDDEV(price_per_unit) AS std_deviation FROM retail_sales
+    SELECT 'Price Per Unit' AS metric_name, 
+	MIN(price_per_unit) AS min_value, 
+	MAX(price_per_unit) AS max_value, 
+	AVG(price_per_unit) AS avg_value, 
+	STDDEV(price_per_unit) AS std_deviation 
+	  FROM retail_sales
     UNION ALL
     SELECT 'Total Sale', MIN(total_sale), MAX(total_sale), AVG(total_sale), STDDEV(total_sale) FROM retail_sales
     UNION ALL
@@ -262,8 +265,8 @@ FROM (
 ORDER BY metric_name;
 /*
 Observation
-* Price per unit ranges from 25.00 to 500.00, averaging 180.12 with variability of ±189.69. The high variability indicating potential for strategic price adjustments.
-* Profit margin ranges from 0.00 to 1,875.00 per transaction, averaging 364.32.
+* Price per unit ranges from 25 to 500, averaging 180.12 with variability of ±189.69. The high variability indicating potential for strategic price adjustments.
+* Profit margin ranges from 0.00 to 1,875 per transaction, averaging 364.32.
 * Average quantity per transaction is 2.51 items with a maximum of 4, this suggesting potential to increase basket size.
 
 */
@@ -901,27 +904,14 @@ Observations
 -- CONCLUSION
 -- =====================================
 /*
-
-The project analysis of the retail sales dataset has successfully transformed raw transactional data. It has helped a business to actually understand its data. 
-Through the analysis of two years of retail transactions, we were able to see how customers shop, when sales peak and which products make the biggest impact.
-
-OUTCOME:
-* The business earned over $900,000 in revenue across 1,997 transactions with strong peaks in the last quarter of each year.
-* Clothing, Electronics and Beauty performed almost equally in total revenue but each played a unique role. Clothing drove the most activity, Electronics generated the 
-  largest revenue and Beauty delivered the highest profit margin.
-* Customers aged 35–54 dominated sales volume while younger shoppers (Gen Z) showed the highest average spend per transaction.
-* Weekends and evening hours proved to be the most valuable selling periods. Seasonal analysis confirmed Fall and Winter as peak revenue seasons.
-* Customer analysis revealed a clear imbalance: a small group of VIP customers generated a large share of revenue while most shoppers contributed little. 
-  Loyal repeat customers showed steady value, while many new buyers did not return, exposing weak retention.
-* RFM segmentation and cohort analysis provided sharper views of customer loyalty, showing who to retain, who to re-engage and who to prioritise.
-
-BUSINESS OPPORTINITIES:
-1. Double down on loyal and high-value customers with targeted rewards and personalised offers.
-2. Maximise Fall and Winter sales while using Spring and Summer for promotions and inventory clearance.
-3. Focus marketing on young high-spending shoppers while maintaining engagement with middle-aged high-volume buyers.
-4. Strengthen retention strategies, since acquiring new customers without keeping them long term leads to lost growth potential.
-
+The transaction data from a U.S retail store sales from 2022–2023 has offered useful insights into sales trends, product performance and customer behaviour. The information demonstrates that 
+the three product categories clothing, electronics and beauty all contribute equally with electronics generating the most overall revenue and beauty achieving the highest average transaction value. 
+Although retention rates after acquisition are still uneven, customer segmentation reveals a heavy reliance on valuable repeat customers. Sales are heavily influenced by seasonal trends; more than 
+two-thirds of yearly revenue is generated in the autumn and winter. Analyses based on age and gender reveal different buying trends, pointing to potential for tailored promotions and targeted 
+advertising. To improve profitability and promote long-term growth, the results generally support a strategic focus on inventory optimisation, customer retention initiatives and seasonal campaign 
+planning.
 */
+
 -- =====================================
 -- END OF THE ANALYSIS
 -- =====================================
